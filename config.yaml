@@ -1,6 +1,6 @@
 baseURL: http://example.org/
 languageCode: en-us
-title: Forty
+title: Portfolio website for Yiyue Hu
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
@@ -10,18 +10,18 @@ params:
     subtitle: |-
       A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
       AND RELEASED UNDER THE CREATIVE COMMONS.
-    title: Hi, my name is Forty
+    title: Hi, my name is Yiyue Hu
   blog: {}
   contact:
     address:
-      - city: City, ST 00000
+      - city: Shanghai, CN 00000
         country: Country
         street: Street
         title: Address
     buttonClear: Clear
     buttonSend: Send message
     email:
-      - email: example@domain.com
+      - email: yhu.mfa2022@london.edu
         title: Email
     enable: yes
     phone:
@@ -43,7 +43,7 @@ params:
         url: https://www.html5up.net
     social:
       - icon: fa-twitter
-        label: Twitter
+        label: Twitter for Yiyue Hu
         url: https://www.twitter.com
       - icon: fa-facebook
         label: Facebook
