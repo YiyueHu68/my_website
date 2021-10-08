@@ -15,7 +15,7 @@ params:
   contact:
     address:
       - city: Shanghai, CN 00000
-        country: Country
+        country: China
         street: Street
         title: Address
     buttonClear: Clear
@@ -81,14 +81,14 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: pic01.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Aliquam
+      - image: lbs.jpg
+        subtitle: SHERRYYYYYYYY
+        title: ANOUT ME
         url: blogs/aliquam
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
-        title: Tempus
-        url: blogs/tempus
+        title: Risk Return of DJIA Industrial Average
+        url: blogs/risk_return
       - image: pic03.jpg
         subtitle: Lorem Etiam Nullam
         title: Magna
