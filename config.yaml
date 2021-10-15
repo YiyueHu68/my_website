@@ -53,7 +53,7 @@ params:
         url: https://www.instagram.com/hubobo_/
       - icon: fa-github
         label: GitHub
-        url: https://www.github.com
+        url: https://github.com/YiyueHu68
       - icon: fa-linkedin
         label: LinkedIn 
         url: https://www.linkedin.com
@@ -82,9 +82,9 @@ params:
     enable: yes
     showcase:
       - image: lbs.jpg
-        subtitle: SHERRYYYYYYYY
+        subtitle: Yiyue Hu
         title: ANOUT ME
-        url: blogs/aliquam
+        url: blogs/my_intro
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
         title: Risk Return of DJIA Industrial Average
