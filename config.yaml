@@ -83,7 +83,7 @@ params:
     showcase:
       - image: lbs.jpg
         subtitle: Yiyue Hu
-        title: ANOUT ME
+        title: ABOUT ME
         url: blogs/my_intro
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
