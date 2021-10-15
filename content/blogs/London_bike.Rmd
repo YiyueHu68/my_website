@@ -109,7 +109,7 @@ ggplot(bike_weather, aes(x = temp, y = day)) +
   geom_point()
 ```
 
-## Ploting distributions of temp
+## Ploting distributions of `temp`
 
 First, we can use histograms
 ```{r ggplot_geom_histogram}

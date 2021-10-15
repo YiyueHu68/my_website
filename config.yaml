@@ -8,8 +8,7 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      AND RELEASED UNDER THE CREATIVE COMMONS.
+      MFA2022 student at LBS.
     title: Hi, my name is Yiyue Hu
   blog: {}
   contact:
@@ -82,7 +81,7 @@ params:
     enable: yes
     showcase:
       - image: lbs.jpg
-        subtitle: Yiyue Hu
+        subtitle: My biology
         title: About Me
         url: blogs/my_intro
       - image: pic02.jpg
@@ -108,7 +107,7 @@ params:
   two:
     buttonText: Get Started
     enable: yes
-    subtitle: "I was born and raised in Shanghai China. I enjoy travelling and i've been to nearly 30 countries all over the world!
+    subtitle: "I was born and raised in Shanghai, China. I enjoy travelling and I've been to nearly 30 countries all over the world!
     In my free time, I enjoy skiing, listening to music and learning languages."
     title: Something about me
     url: blogs
