@@ -8,7 +8,7 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      MFA2022 student at LBS.
+      MFA2022 student at LBS
     title: Hi, my name is Yiyue Hu
   blog: {}
   contact:
@@ -75,8 +75,8 @@ params:
       - name: Elements
         url: elements.html
     menu: Menu
-    subtitle: By HTML5 Up
-    title: Forty
+    subtitle: Personal Website
+    title: Yiyue Hu
   tiles:
     enable: yes
     showcase:
@@ -92,9 +92,9 @@ params:
         subtitle: Exploring the relationship between the number of daily bike rentals in London and temperature
         title: London Bike Rentals and London weather
         url: blogs/London_bike
-      - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
-        title: Ipsum
+      - image: tourism1.jpeg
+        subtitle: Explore the relationship between tourist arrivals and spending
+        title: UN Tourism Data
         url: blogs/ipsum
       - image: pic05.jpg
         subtitle: Ipsum Dolor Sit Amet
