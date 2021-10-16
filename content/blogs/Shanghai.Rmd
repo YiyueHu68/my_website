@@ -17,15 +17,17 @@ Shanghai is one of the four direct-administered municipalities of the People's R
 
 Shanghai has been described as the "showpiece" of the booming economy of China. Featuring several architectural styles such as Art Deco and shikumen, the city is renowned for its Lujiazui skyline, museums and historic buildings including the City God Temple, Yu Garden, the China Pavilion and buildings along the Bund. Shanghai is also known for its sugary cuisine, distinctive local language and vibrant international flair. 
 
+Source: wikipedia
+
 ## Some Pictures of Shanghai
 
 # Shikumen
 ```{r, pic1}
-knitr::include_graphics("/img/shanghai3.jpeg",error =FALSE)
+knitr::include_graphics("/img/shanghai3.jpg",error =FALSE)
 ```
 
 # Jingan Temple
 ```{r, pic2}
-knitr::include_graphics("/img/shanghai1.jpeg",error =FALSE)
+knitr::include_graphics("/img/shanghai1.jpg",error =FALSE)
 ```
 

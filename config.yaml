@@ -84,7 +84,7 @@ params:
         subtitle: My biology
         title: About Me
         url: blogs/my_intro
-      - image: pic02.jpg
+      - image: CAPM1.jpeg
         subtitle: Financial Performance Analysis
         title: Risk Return of DJIA Industrial Average
         url: blogs/risk_return
