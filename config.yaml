@@ -103,7 +103,7 @@ params:
       - image: wsj.png
         subtitle: An Article Published in WALL STREET JOURNAL
         title: Companies Strike While the Stock Market Is Hot
-        url: blogs/wsj
+        url: /img/blogs/stock.pdf
   two:
     buttonText: Get Started
     enable: yes

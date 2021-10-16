@@ -140,7 +140,7 @@ tourism_long2 <- tourism_wide2 %>%
 skimr::skim(tourism_long)
 ```
 
-### Plot % changes, with 1=100% as starting point for each country
+## Plot % changes, with 1=100% as starting point for each country
 
 ```{r, plotchanges}
 tourism_long2 %>% 
