@@ -91,7 +91,7 @@ params:
       - image: bike.jpeg
         subtitle: Exploring the relationship between the number of daily bike rentals in London and temperature
         title: London Bike Rentals and London weather
-        url: blogs/London_bike
+        url: blogs/un_tourism_data
       - image: tourism1.jpeg
         subtitle: Explore the relationship between tourist arrivals and spending
         title: UN Tourism Data
