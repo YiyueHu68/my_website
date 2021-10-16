@@ -100,10 +100,10 @@ params:
         subtitle: An Introduction to my hometown
         title: About Shanghai
         url: blogs/Shanghai
-      - image: pic06.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Etiam
-        url: blogs/ipsum
+      - image: wsj.png
+        subtitle: An Article Published in WALL STREET JOURNAL
+        title: Companies Strike While the Stock Market Is Hot
+        url: blogs/wsj
   two:
     buttonText: Get Started
     enable: yes
