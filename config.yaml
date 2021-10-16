@@ -95,7 +95,7 @@ params:
       - image: tourism1.jpeg
         subtitle: Explore the relationship between tourist arrivals and spending
         title: UN Tourism Data
-        url: blogs/ipsum
+        url: blogs/UN_Tourism_Data
       - image: pic05.jpg
         subtitle: Ipsum Dolor Sit Amet
         title: Consequat
