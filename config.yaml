@@ -93,13 +93,13 @@ params:
         title: London Bike Rentals and London weather
         url: blogs/un_tourism_data
       - image: tourism1.jpeg
-        subtitle: Explore the relationship between tourist arrivals and spending
+        subtitle: Explore the Relationship between Tourist Arrivals and Spending
         title: UN Tourism Data
         url: blogs/UN_Tourism_Data
-      - image: pic05.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Consequat
-        url: blogs/ipsum
+      - image: shanghai2.jpeg
+        subtitle: An Introduction to my hometown
+        title: About Shanghai
+        url: blogs/Shanghai
       - image: pic06.jpg
         subtitle: Feugiat Amet Tempus
         title: Etiam

@@ -1,24 +1,25 @@
 ---
-title: "UN Tourism Data"
-date: '2021-09-30'
-description: UN Tourism Data
-draft: no
-image: tourism.jpeg
-keywords: ''
-slug: un_tourism_data
-categories:
-- ''
-- ''
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
+- ""
+date: "2021-09-30"
+description: UN Tourism Data # the title that will show up once someone gets to this page
+draft: false
+image: tourism.jpeg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: UN_Tourism_Data # slug is the shorthand URL address... no spaces plz
+title: UN Tourism Data
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <div id="load-libraries" class="section level2">
-<h2>load libraries</h2>
+<h2>Load libraries</h2>
 </div>
 <div id="data-cleaning" class="section level2">
-<h2>data cleaning</h2>
+<h2>Data cleaning</h2>
 <pre class="r"><code>url &lt;- &quot;https://data.un.org/_Docs/SYB/CSV/SYB63_176_202003_Tourist-Visitors%20Arrival%20and%20Expenditure.csv&quot;
 
 un_tourism_data &lt;- fread(input = url,
@@ -885,7 +886,7 @@ skimr::skim(tourism_long)</code></pre>
 <p><img src="/blogs/un_tourism_data_files/figure-html/tourist%20arrivals%20and%20spending-1.png" width="672" /></p>
 </div>
 <div id="calculate-growth-rates-starting-for-each-country-at-1-or-100" class="section level1">
-<h1>calculate growth rates, starting for each country at 1 (or 100%)</h1>
+<h1>Calculate growth rates, starting for each country at 1 (or 100%)</h1>
 <pre class="r"><code>tourism_wide2 &lt;- tourism_wide  %&gt;% 
   group_by(country) %&gt;%
   mutate(
@@ -1198,7 +1199,7 @@ glimpse(un_tourism_wide)</code></pre>
 ## $ spending_per_tourist                       &lt;dbl&gt; 811.50160, 447.42015, 441.5…</code></pre>
 </div>
 <div id="let-us-plot-the-distribution-of-spending-per-tourist-in-each-region" class="section level1">
-<h1>let us plot the distribution of spending per tourist in each region</h1>
+<h1>Let us plot the distribution of spending per tourist in each region</h1>
 <pre class="r"><code>un_tourism_wide %&gt;% 
   ggplot(aes(x=spending_per_tourist, colour=region)) +
   # geom_histogram()+
