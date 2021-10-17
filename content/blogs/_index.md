@@ -6,4 +6,4 @@ slug: blogs
 title: My Website
 ---
 
-My blogs about technology and lifestyle.
+My Personal Website
