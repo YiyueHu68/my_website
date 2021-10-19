@@ -15,7 +15,7 @@ title: Risk-Return of DJIA stocks
 
 
 
-```{r, setup, echo=FALSE}
+```{r echo=FALSE, setup, echo=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
@@ -142,9 +142,9 @@ myStocks_returns_monthly %>%
 ```{r, risk_return, echo=FALSE}
 
 by_year_monthly <- myStocks_returns_monthly %>% 
-  mutate(year = year(date),
+  dplyr::mutate(year = year(date),
          month=month(date),
-         month_name = month(date, label=TRUE)
+         month_name = month(date)
   )
 
 cols <- c("grey10","tomato")
