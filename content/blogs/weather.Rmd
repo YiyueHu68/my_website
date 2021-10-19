@@ -49,7 +49,7 @@ library(infer)
 ```
 
 
-##load the file
+## load the file
 ```{r}
 weather <- 
   read_csv("https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv", 
@@ -58,7 +58,7 @@ weather <-
 
 ```
 
-##clean the data
+## clean the data
 ```{r tidyweather}
 tidyweather <- weather%>%
   select(Year,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec)%>%
@@ -92,7 +92,7 @@ ggplot(tidyweather, aes(x=date, y = delta))+
 **The effect of increasing temperature is more pronounced in the summer months of May, June, July, August and September as depicted by the steeper upward slopes in the five graphs of these respective months in the Monthly Weather Anomalies below. We can also see from the Yearly Weather Anomalies graph above that from 1980 onward, temperature deviation from NASA's base period temperatures has consistently increased.**
 
 
-##Use `facet_wrap()` to produce a separate scatter plot for each month, again with a smoothing line. 
+## Use `facet_wrap()` to produce a separate scatter plot for each month, again with a smoothing line. 
 
 ```{r tidy_facet_wrap}
 

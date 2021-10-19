@@ -17,12 +17,15 @@ title: Climate change and temperature anomalies
 
 <div id="climate-change-and-temperature-anomalies" class="section level1">
 <h1>Climate change and temperature anomalies</h1>
-<p>##load the file</p>
+<div id="load-the-file" class="section level2">
+<h2>load the file</h2>
 <pre class="r"><code>weather &lt;- 
   read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv&quot;, 
            skip = 1, 
            na = &quot;***&quot;)</code></pre>
-<p>##clean the data</p>
+</div>
+<div id="clean-the-data" class="section level2">
+<h2>clean the data</h2>
 <pre class="r"><code>tidyweather &lt;- weather%&gt;%
   select(Year,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec)%&gt;%
   pivot_longer(cols=2:13,names_to=&quot;Month&quot;,values_to=&quot;delta&quot;)
@@ -42,6 +45,7 @@ tidyweather</code></pre>
 ##  9  1880 Sep   -0.23
 ## 10  1880 Oct   -0.32
 ## # … with 1,694 more rows</code></pre>
+</div>
 <div id="plotting-information" class="section level2">
 <h2>Plotting Information</h2>
 <p>Let us plot the data using a time-series scatter plot, and add a trendline. To do that, we first need to create a new variable called <code>date</code> in order to ensure that the <code>delta</code> values are plot chronologically.</p>
@@ -57,7 +61,9 @@ ggplot(tidyweather, aes(x=date, y = delta))+
   labs (title = &quot;Weather Anomalies from 1880 - 2021&quot;, y =&quot;Temperature Deviation&quot;, x = &quot;Years&quot;)</code></pre>
 <p><img src="/blogs/weather_files/figure-html/scatter_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p><strong>The effect of increasing temperature is more pronounced in the summer months of May, June, July, August and September as depicted by the steeper upward slopes in the five graphs of these respective months in the Monthly Weather Anomalies below. We can also see from the Yearly Weather Anomalies graph above that from 1980 onward, temperature deviation from NASA’s base period temperatures has consistently increased.</strong></p>
-<p>##Use <code>facet_wrap()</code> to produce a separate scatter plot for each month, again with a smoothing line.</p>
+</div>
+<div id="use-facet_wrap-to-produce-a-separate-scatter-plot-for-each-month-again-with-a-smoothing-line." class="section level2">
+<h2>Use <code>facet_wrap()</code> to produce a separate scatter plot for each month, again with a smoothing line.</h2>
 <pre class="r"><code>tidyweather%&gt;%
   ggplot(aes(x=date,y=delta))+
   geom_point()+
