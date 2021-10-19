@@ -12,7 +12,6 @@ slug: UN_Tourism_Data # slug is the shorthand URL address... no spaces plz
 title: UN Tourism Data
 ---
 
-## Load libraries
 ```{r, load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(data.table)

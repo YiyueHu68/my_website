@@ -15,9 +15,6 @@ title: UN Tourism Data
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<div id="load-libraries" class="section level2">
-<h2>Load libraries</h2>
-</div>
 <div id="data-cleaning" class="section level2">
 <h2>Data cleaning</h2>
 <pre class="r"><code>url &lt;- &quot;https://data.un.org/_Docs/SYB/CSV/SYB63_176_202003_Tourist-Visitors%20Arrival%20and%20Expenditure.csv&quot;
@@ -1050,8 +1047,8 @@ skimr::skim(tourism_long)</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="plot-changes-with-1100-as-starting-point-for-each-country" class="section level3">
-<h3>Plot % changes, with 1=100% as starting point for each country</h3>
+<div id="plot-changes-with-1100-as-starting-point-for-each-country" class="section level2">
+<h2>Plot % changes, with 1=100% as starting point for each country</h2>
 <pre class="r"><code>tourism_long2 %&gt;% 
   filter(country %in% c(&quot;France&quot;, &quot;Spain&quot;, &quot;Italy&quot;, &quot;United Kingdom&quot;, &quot;Thailand&quot;, &quot;China&quot;)) %&gt;% 
   ggplot(aes(x=year, y = value, colour=country))+
