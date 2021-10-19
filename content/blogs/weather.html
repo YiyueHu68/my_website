@@ -1,0 +1,129 @@
+---
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
+- ""
+date: "2021-09-30"
+description: Climate change and temperature anomalies  # the title that will show up once someone gets to this page
+draft: false
+image: weather1.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: weather # slug is the shorthand URL address... no spaces plz
+title: Climate change and temperature anomalies 
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="climate-change-and-temperature-anomalies" class="section level1">
+<h1>Climate change and temperature anomalies</h1>
+<p>##load the file</p>
+<pre class="r"><code>weather &lt;- 
+  read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv&quot;, 
+           skip = 1, 
+           na = &quot;***&quot;)</code></pre>
+<p>##clean the data</p>
+<pre class="r"><code>tidyweather &lt;- weather%&gt;%
+  select(Year,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec)%&gt;%
+  pivot_longer(cols=2:13,names_to=&quot;Month&quot;,values_to=&quot;delta&quot;)
+
+tidyweather</code></pre>
+<pre><code>## # A tibble: 1,704 × 3
+##     Year Month delta
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1  1880 Jan   -0.35
+##  2  1880 Feb   -0.51
+##  3  1880 Mar   -0.23
+##  4  1880 Apr   -0.3 
+##  5  1880 May   -0.06
+##  6  1880 Jun   -0.16
+##  7  1880 Jul   -0.18
+##  8  1880 Aug   -0.26
+##  9  1880 Sep   -0.23
+## 10  1880 Oct   -0.32
+## # … with 1,694 more rows</code></pre>
+<div id="plotting-information" class="section level2">
+<h2>Plotting Information</h2>
+<p>Let us plot the data using a time-series scatter plot, and add a trendline. To do that, we first need to create a new variable called <code>date</code> in order to ensure that the <code>delta</code> values are plot chronologically.</p>
+<pre class="r"><code>tidyweather &lt;- tidyweather %&gt;%
+  mutate(date = ymd(paste(as.character(Year), Month, &quot;1&quot;)),
+         month = month(date),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color=&quot;red&quot;) +
+  theme_bw() +
+  labs (title = &quot;Weather Anomalies from 1880 - 2021&quot;, y =&quot;Temperature Deviation&quot;, x = &quot;Years&quot;)</code></pre>
+<p><img src="/blogs/weather_files/figure-html/scatter_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><strong>The effect of increasing temperature is more pronounced in the summer months of May, June, July, August and September as depicted by the steeper upward slopes in the five graphs of these respective months in the Monthly Weather Anomalies below. We can also see from the Yearly Weather Anomalies graph above that from 1980 onward, temperature deviation from NASA’s base period temperatures has consistently increased.</strong></p>
+<p>##Use <code>facet_wrap()</code> to produce a separate scatter plot for each month, again with a smoothing line.</p>
+<pre class="r"><code>tidyweather%&gt;%
+  ggplot(aes(x=date,y=delta))+
+  geom_point()+
+  geom_smooth(se=F, colour=&quot;red&quot;)+
+  facet_wrap(~month,scale=&quot;free&quot;)+
+  theme_bw()+
+   labs(title=&quot;Monthly Weather Anomalies&quot;,
+    x = &quot;Years&quot;,
+    y = &quot;Temperature Deviation from NASA&#39;s Base Period&quot;)</code></pre>
+<p><img src="/blogs/weather_files/figure-html/tidy_facet_wrap-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="it-is-sometimes-useful-to-group-data-into-different-time-periods-to-study-historical-data." class="section level2">
+<h2>It is sometimes useful to group data into different time periods to study historical data.</h2>
+<pre class="r"><code>comparison &lt;- tidyweather %&gt;% 
+  filter(Year&gt;= 1881) %&gt;%
+  mutate(interval = case_when(
+    Year %in% c(1881:1920) ~ &quot;1881-1920&quot;,
+    Year %in% c(1921:1950) ~ &quot;1921-1950&quot;,
+    Year %in% c(1951:1980) ~ &quot;1951-1980&quot;,
+    Year %in% c(1981:2010) ~ &quot;1981-2010&quot;,
+    TRUE ~ &quot;2011-present&quot;
+  ))
+print(comparison)</code></pre>
+<pre><code>## # A tibble: 1,692 × 7
+##     Year Month delta date       month  year interval 
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    
+##  1  1881 Jan   -0.3  1881-01-01     1  1881 1881-1920
+##  2  1881 Feb   -0.21 1881-02-01     2  1881 1881-1920
+##  3  1881 Mar   -0.03 1881-03-01     3  1881 1881-1920
+##  4  1881 Apr    0.01 1881-04-01     4  1881 1881-1920
+##  5  1881 May    0.04 1881-05-01     5  1881 1881-1920
+##  6  1881 Jun   -0.32 1881-06-01     6  1881 1881-1920
+##  7  1881 Jul    0.08 1881-07-01     7  1881 1881-1920
+##  8  1881 Aug   -0.04 1881-08-01     8  1881 1881-1920
+##  9  1881 Sep   -0.26 1881-09-01     9  1881 1881-1920
+## 10  1881 Oct   -0.43 1881-10-01    10  1881 1881-1920
+## # … with 1,682 more rows</code></pre>
+</div>
+<div id="create-a-density-plot-to-study-the-distribution-of-monthly-deviations-delta-grouped-by-the-different-time-periods-we-are-interested-in.-set-fill-to-interval-to-group-and-colour-the-data-by-different-time-periods." class="section level2">
+<h2>Create a density plot to study the distribution of monthly deviations (<code>delta</code>), grouped by the different time periods we are interested in. Set <code>fill</code> to <code>interval</code> to group and colour the data by different time periods.</h2>
+<pre class="r"><code>ggplot(comparison, aes(x=delta, fill=interval))+
+  geom_density(alpha=0.2) +   
+  theme_bw() +                
+  labs (
+    title = &quot;Density Plot for Monthly Temperature Anomalies&quot;,
+    y     = &quot;Density&quot;       
+  )</code></pre>
+<p><img src="/blogs/weather_files/figure-html/density_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-annual-anomalies-and-display-the-result" class="section level2">
+<h2>Calculate annual anomalies and display the result</h2>
+<pre class="r"><code>#creating yearly averages
+average_annual_anomaly &lt;- tidyweather %&gt;% 
+  dplyr::group_by(Year) %&gt;%
+  dplyr::summarise(average_annual_delta = mean(delta, na.rm=TRUE)) 
+
+#plotting the data:
+ggplot(average_annual_anomaly, aes(x=Year, y= average_annual_delta))+
+  geom_point()+
+  
+  #Fit the best fit line, using LOESS method
+ geom_smooth(method=&quot;loess&quot;) +
+  
+  #change to theme_bw() to have white background + black frame around plot
+theme_bw() +
+  labs (title = &quot;Yearly Average Anomaly from 1880 - 2021&quot;, y = &quot;Average Annual Delta&quot;, x = &quot;Years&quot;)     </code></pre>
+<p><img src="/blogs/weather_files/figure-html/averaging-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+</div>

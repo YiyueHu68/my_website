@@ -19,48 +19,38 @@ title: Risk-Return of DJIA stocks
 <h1>Returns of financial stocks</h1>
 <pre class="r"><code>djia_url &lt;- &quot;https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average&quot;
 
-
 #get tables that exist on URL
 tables &lt;- djia_url %&gt;% 
   read_html() %&gt;% 
   html_nodes(css=&quot;table&quot;)
 
 
-# parse HTML tables into a dataframe called djia. 
-# Use purr::map() to create a list of all tables in URL
 djia &lt;- map(tables, . %&gt;% 
                html_table(fill=TRUE)%&gt;% 
                clean_names())
 
 
-# constituents
+
 table1 &lt;- djia[[2]] %&gt;% # the second table on the page contains the ticker symbols
   mutate(date_added = ymd(date_added),
-         
-         # if a stock is listed on NYSE, its symbol is, e.g., NYSE: MMM
-         # We will get prices from yahoo finance which requires just the ticker
-         
-         # if symbol contains &quot;NYSE*&quot;, the * being a wildcard
-         # then we jsut drop the first 6 characters in that string
          ticker = ifelse(str_detect(symbol, &quot;NYSE*&quot;),
                           str_sub(symbol,7,11),
                           symbol)
          )
 
-# we need a vector of strings with just the 30 tickers + SPY  + VIX
 tickers &lt;- table1 %&gt;% 
   select(ticker) %&gt;% 
   pull() %&gt;% # pull() gets them as a sting of characters
   c(&quot;SPY&quot;, &quot;^VIX&quot;) # and lets us add SPY, the SP500 ETF, and the VIX index</code></pre>
-<pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
-
-myStocks &lt;- tickers %&gt;% 
+<div id="get-my-stock" class="section level2">
+<h2>get my stock</h2>
+<pre class="r"><code>myStocks &lt;- tickers %&gt;% 
   tq_get(get  = &quot;stock.prices&quot;,
          from = &quot;2000-01-01&quot;) %&gt;%
   group_by(symbol) 
 
-glimpse(myStocks) # examine the structure of the resulting data frame</code></pre>
-<pre><code>## Rows: 167,247
+glimpse(myStocks) </code></pre>
+<pre><code>## Rows: 167,471
 ## Columns: 8
 ## Groups: symbol [32]
 ## $ symbol   &lt;chr&gt; &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;…
@@ -108,4 +98,5 @@ myStocks_returns_monthly %&gt;%
   NULL</code></pre>
 <p><img src="/blogs/risk_return_files/figure-html/unnamed-chunk-1-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p><img src="/blogs/risk_return_files/figure-html/risk_return-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
 </div>

@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+```{r load-libraries, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(lubridate)
 library(here)
@@ -54,35 +54,25 @@ library(ggrepel)
 
 djia_url <- "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"
 
-
 #get tables that exist on URL
 tables <- djia_url %>% 
   read_html() %>% 
   html_nodes(css="table")
 
 
-# parse HTML tables into a dataframe called djia. 
-# Use purr::map() to create a list of all tables in URL
 djia <- map(tables, . %>% 
                html_table(fill=TRUE)%>% 
                clean_names())
 
 
-# constituents
+
 table1 <- djia[[2]] %>% # the second table on the page contains the ticker symbols
   mutate(date_added = ymd(date_added),
-         
-         # if a stock is listed on NYSE, its symbol is, e.g., NYSE: MMM
-         # We will get prices from yahoo finance which requires just the ticker
-         
-         # if symbol contains "NYSE*", the * being a wildcard
-         # then we jsut drop the first 6 characters in that string
          ticker = ifelse(str_detect(symbol, "NYSE*"),
                           str_sub(symbol,7,11),
                           symbol)
          )
 
-# we need a vector of strings with just the 30 tickers + SPY  + VIX
 tickers <- table1 %>% 
   select(ticker) %>% 
   pull() %>% # pull() gets them as a sting of characters
@@ -91,17 +81,16 @@ tickers <- table1 %>%
 ```
 
 
-
+## get my stock 
 
 ```{r get_price_data, message=FALSE, warning=FALSE, cache=TRUE}
-# Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
 
 myStocks <- tickers %>% 
   tq_get(get  = "stock.prices",
          from = "2000-01-01") %>%
   group_by(symbol) 
 
-glimpse(myStocks) # examine the structure of the resulting data frame
+glimpse(myStocks) 
 ```
 
 Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.

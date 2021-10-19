@@ -88,10 +88,10 @@ params:
         subtitle: Financial Performance Analysis
         title: Risk Return of DJIA Industrial Average
         url: blogs/risk_return
-      - image: bike.jpeg
-        subtitle: Exploring the relationship between the number of daily bike rentals in London and temperature
-        title: London Bike Rentals and London weather
-        url: blogs/un_tourism_data
+      - image: weather.jpeg
+        subtitle: Explore Weather Anomalies
+        title: Climate change and temperature anomalies
+        url: blogs/weather
       - image: tourism1.jpeg
         subtitle: Explore the Relationship between Tourist Arrivals and Spending
         title: UN Tourism Data
