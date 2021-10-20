@@ -95,7 +95,7 @@ params:
       - image: tourism1.jpeg
         subtitle: Explore the Relationship between Tourist Arrivals and Spending
         title: UN Tourism Data
-        url: https://www.fudan.edu.cn/en/
+        url: blogs/UN_Tourism_Data
       - image: shanghai2.jpeg
         subtitle: An Introduction to my hometown
         title: About Shanghai
