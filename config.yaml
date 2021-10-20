@@ -93,7 +93,7 @@ params:
         title: Climate change and temperature anomalies
         url: blogs/weather
       - image: fudan.jpg
-        subtitle: Official Website of Fudan University
+        subtitle: Official Website of my undergraduate university, Fudan University
         title: Fudan University
         url: https://www.fudan.edu.cn/en/
       - image: shanghai2.jpeg
