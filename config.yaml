@@ -92,9 +92,9 @@ params:
         subtitle: Explore Weather Anomalies
         title: Climate change and temperature anomalies
         url: blogs/weather
-      - image: tourism1.jpeg
-        subtitle: Explore the Relationship between Tourist Arrivals and Spending
-        title: UN Tourism Data
+      - image: fudan.jpg
+        subtitle: Official Website of Fudan University
+        title: Fudan University
         url: https://www.fudan.edu.cn/en/
       - image: shanghai2.jpeg
         subtitle: An Introduction to my hometown
