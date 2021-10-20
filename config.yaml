@@ -84,10 +84,10 @@ params:
         subtitle: My biology
         title: About Me
         url: blogs/my_intro
-##      - image: CAPM1.jpeg
-##        subtitle: Financial Performance Analysis
-##        title: Risk Return of DJIA Industrial Average
-##        url: blogs/risk_return
+      - image: CAPM1.jpeg
+        subtitle: Explore yearly change of US CPI and its components
+        title: How has the CPI and its components changed over the last few years?
+        url: blogs/cpi
       - image: weather.jpeg
         subtitle: Explore Weather Anomalies
         title: Climate change and temperature anomalies

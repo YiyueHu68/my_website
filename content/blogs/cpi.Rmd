@@ -1,0 +1,163 @@
+---
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
+- ""
+date: "2021-09-30"
+description: How has the CPI and its components changed over the last few years? # the title that will show up once someone gets to this page
+draft: false
+image: finance.jpeg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: CPI # slug is the shorthand URL address... no spaces plz
+title: How has the CPI and its components changed over the last few years?
+---
+
+```{r echo=FALSE, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(stringr)
+library(skimr)
+library(dplyr)
+library(infer)
+```  
+
+# How has the CPI and its components changed over the last few years?
+
+## Getting the data
+```{r, webscraping}
+
+#Installing packages
+
+library(rvest) # to scrape website
+library(tidyquant)
+
+#Getting the tables from the website
+
+url <- "https://fredaccount.stlouisfed.org/public/datalist/843"
+tables <- url %>% 
+  read_html() %>% 
+  html_nodes(css="table")
+
+CPI_data_1 <- map(tables, . %>% 
+             html_table(fill=TRUE)%>% 
+             janitor::clean_names())
+
+CPI_data_2 <- CPI_data_1[[2]] %>% 
+  slice(1:49)
+
+#Pulling a vector of components via series_id
+
+series_ids <- CPI_data_2 %>% 
+  pull(series_id) 
+
+#Getting the data from 01-01-2015 as chart starts from 2016 onwards 
+
+CPI_data_3 <- tidyquant::tq_get(series_ids, get = "economic.data", from =  "2015-01-01")
+head(CPI_data_3)
+
+```
+
+## Modifying the data 
+
+``` {r, modifying the data}
+
+# Keeping only the important categories 
+
+# All Items (100%)          = CPIAUCSL
+# Housing (42%)             = CPIHOSSL
+# Transport (15%)           = CPITRNSL
+# Food and Beverages (15%)  = CPIFABSL
+# Apparel (3%)              = CPIAPPSL
+
+important_categories <-c("CPIAUCSL", "CPIHOSSL", "CPITRNSL", "CPIFABSL", "CPIAPPSL")
+
+CPI_data_4 <- CPI_data_3 %>%
+  filter(symbol %in% important_categories)  
+
+# Adding a lagged column and removing the resulting NAs
+
+CPI_data_5 <- CPI_data_4 %>%
+  group_by(symbol) %>%
+  dplyr::mutate(year_change = price/dplyr::lag(price, 12,default = NA) - 1) %>%
+  dplyr::filter(year_change != "NA") %>%
+  as.data.frame()
+
+# Adding direction of price changes for coloring points later on
+
+CPI_data_6 <- CPI_data_5 %>%
+  dplyr::mutate(change_sign = ifelse(year_change >= 0, "positive", "negative"))
+
+# Adding the names of the series to the dataframe 
+
+CPI_data_7 <- CPI_data_6 %>%
+  dplyr::mutate(titles = case_when(symbol == "CPIAUCSL" ~ "All Items", 
+                               symbol == "CPIHOSSL" ~ "Housing",
+                               symbol == "CPITRNSL" ~ "Transport",
+                               symbol == "CPIFABSL" ~ "Food and Beverages",
+                               symbol == "CPIAPPSL" ~ "Apparel")
+                )
+
+# Sorting the data according to the magnitude of yearly changes 
+
+CPI_data_8 <- CPI_data_7 %>%
+  mutate(titles = factor(titles,levels=c("All Items","Transport","Apparel","Food and Beverages","Housing")))
+head(CPI_data_8)
+
+```
+## Plotting the data
+
+```{r, plotting the data}
+
+CPI_data_8 %>%
+  ggplot(aes(x = date, y = year_change, col=change_sign))+
+  geom_point(alpha=0.8)+
+  geom_smooth(col="grey", se=F)+
+  scale_y_continuous(labels = scales::percent) + 
+  facet_wrap("titles", ncol = 3, scales = "free") + 
+  theme_bw() + 
+  theme(legend.position= "none", plot.title = element_text(face = "bold"))+
+  scale_colour_manual(values = c("positive" = "lightcoral", "negative" = "steelblue2"))+
+  labs(
+    title = "Yearly change of US CPI and its most important components",
+    subtitle = "YoY change, positive when red and negative when blue
+Jan 2016 to Aug 2021",
+    caption = "Data from St. Louis Fed FRED 
+    https://fredaccount.stlouisfed.org/public/datalist/843",
+    x = "",
+    y = "YoY % Change"
+  )+
+  NULL
+
+```
+```
+
+
+
+
+
+

@@ -1,0 +1,135 @@
+---
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
+- ""
+date: "2021-09-30"
+description: How has the CPI and its components changed over the last few years? # the title that will show up once someone gets to this page
+draft: false
+image: finance.jpeg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: CPI # slug is the shorthand URL address... no spaces plz
+title: How has the CPI and its components changed over the last few years?
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="how-has-the-cpi-and-its-components-changed-over-the-last-few-years" class="section level1">
+<h1>How has the CPI and its components changed over the last few years?</h1>
+<div id="getting-the-data" class="section level2">
+<h2>Getting the data</h2>
+<pre class="r"><code>#Installing packages
+
+library(rvest) # to scrape website
+library(tidyquant)
+
+#Getting the tables from the website
+
+url &lt;- &quot;https://fredaccount.stlouisfed.org/public/datalist/843&quot;
+tables &lt;- url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(css=&quot;table&quot;)
+
+CPI_data_1 &lt;- map(tables, . %&gt;% 
+             html_table(fill=TRUE)%&gt;% 
+             janitor::clean_names())
+
+CPI_data_2 &lt;- CPI_data_1[[2]] %&gt;% 
+  slice(1:49)
+
+#Pulling a vector of components via series_id
+
+series_ids &lt;- CPI_data_2 %&gt;% 
+  pull(series_id) 
+
+#Getting the data from 01-01-2015 as chart starts from 2016 onwards 
+
+CPI_data_3 &lt;- tidyquant::tq_get(series_ids, get = &quot;economic.data&quot;, from =  &quot;2015-01-01&quot;)
+head(CPI_data_3)</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   symbol         date       price
+##   &lt;chr&gt;          &lt;date&gt;     &lt;dbl&gt;
+## 1 CUSR0000SETG01 2015-01-01  295.
+## 2 CUSR0000SETG01 2015-02-01  294.
+## 3 CUSR0000SETG01 2015-03-01  291.
+## 4 CUSR0000SETG01 2015-04-01  285.
+## 5 CUSR0000SETG01 2015-05-01  293.
+## 6 CUSR0000SETG01 2015-06-01  299.</code></pre>
+</div>
+<div id="modifying-the-data" class="section level2">
+<h2>Modifying the data</h2>
+<pre class="r"><code># Keeping only the important categories 
+
+# All Items (100%)          = CPIAUCSL
+# Housing (42%)             = CPIHOSSL
+# Transport (15%)           = CPITRNSL
+# Food and Beverages (15%)  = CPIFABSL
+# Apparel (3%)              = CPIAPPSL
+
+important_categories &lt;-c(&quot;CPIAUCSL&quot;, &quot;CPIHOSSL&quot;, &quot;CPITRNSL&quot;, &quot;CPIFABSL&quot;, &quot;CPIAPPSL&quot;)
+
+CPI_data_4 &lt;- CPI_data_3 %&gt;%
+  filter(symbol %in% important_categories)  
+
+# Adding a lagged column and removing the resulting NAs
+
+CPI_data_5 &lt;- CPI_data_4 %&gt;%
+  group_by(symbol) %&gt;%
+  dplyr::mutate(year_change = price/dplyr::lag(price, 12,default = NA) - 1) %&gt;%
+  dplyr::filter(year_change != &quot;NA&quot;) %&gt;%
+  as.data.frame()
+
+# Adding direction of price changes for coloring points later on
+
+CPI_data_6 &lt;- CPI_data_5 %&gt;%
+  dplyr::mutate(change_sign = ifelse(year_change &gt;= 0, &quot;positive&quot;, &quot;negative&quot;))
+
+# Adding the names of the series to the dataframe 
+
+CPI_data_7 &lt;- CPI_data_6 %&gt;%
+  dplyr::mutate(titles = case_when(symbol == &quot;CPIAUCSL&quot; ~ &quot;All Items&quot;, 
+                               symbol == &quot;CPIHOSSL&quot; ~ &quot;Housing&quot;,
+                               symbol == &quot;CPITRNSL&quot; ~ &quot;Transport&quot;,
+                               symbol == &quot;CPIFABSL&quot; ~ &quot;Food and Beverages&quot;,
+                               symbol == &quot;CPIAPPSL&quot; ~ &quot;Apparel&quot;)
+                )
+
+# Sorting the data according to the magnitude of yearly changes 
+
+CPI_data_8 &lt;- CPI_data_7 %&gt;%
+  mutate(titles = factor(titles,levels=c(&quot;All Items&quot;,&quot;Transport&quot;,&quot;Apparel&quot;,&quot;Food and Beverages&quot;,&quot;Housing&quot;)))
+head(CPI_data_8)</code></pre>
+<pre><code>##     symbol       date price year_change change_sign    titles
+## 1 CPIAUCSL 2016-01-01   238     0.01238    positive All Items
+## 2 CPIAUCSL 2016-02-01   237     0.00847    positive All Items
+## 3 CPIAUCSL 2016-03-01   238     0.00892    positive All Items
+## 4 CPIAUCSL 2016-04-01   239     0.01173    positive All Items
+## 5 CPIAUCSL 2016-05-01   240     0.01078    positive All Items
+## 6 CPIAUCSL 2016-06-01   240     0.01079    positive All Items</code></pre>
+</div>
+<div id="plotting-the-data" class="section level2">
+<h2>Plotting the data</h2>
+<pre class="r"><code>CPI_data_8 %&gt;%
+  ggplot(aes(x = date, y = year_change, col=change_sign))+
+  geom_point(alpha=0.8)+
+  geom_smooth(col=&quot;grey&quot;, se=F)+
+  scale_y_continuous(labels = scales::percent) + 
+  facet_wrap(&quot;titles&quot;, ncol = 3, scales = &quot;free&quot;) + 
+  theme_bw() + 
+  theme(legend.position= &quot;none&quot;, plot.title = element_text(face = &quot;bold&quot;))+
+  scale_colour_manual(values = c(&quot;positive&quot; = &quot;lightcoral&quot;, &quot;negative&quot; = &quot;steelblue2&quot;))+
+  labs(
+    title = &quot;Yearly change of US CPI and its most important components&quot;,
+    subtitle = &quot;YoY change, positive when red and negative when blue
+Jan 2016 to Aug 2021&quot;,
+    caption = &quot;Data from St. Louis Fed FRED 
+    https://fredaccount.stlouisfed.org/public/datalist/843&quot;,
+    x = &quot;&quot;,
+    y = &quot;YoY % Change&quot;
+  )+
+  NULL</code></pre>
+<p><img src="/blogs/cpi_files/figure-html/plotting%20the%20data-1.png" width="648" style="display: block; margin: auto;" />
+```</p>
+</div>
+</div>
